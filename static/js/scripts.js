@@ -1,6 +1,25 @@
-// ...existing code...
+function showMainPage() {
+    document.getElementById('main-page').classList.remove('hidden');
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('register-page').classList.add('hidden');
+    document.getElementById('forgot-password-page').classList.add('hidden');
+}
 
-const BASE_URL = 'https://lexup-words-and-collections-production.up.railway.app';
+function showLoginPage() {
+    document.getElementById('main-page').classList.add('hidden');
+    document.getElementById('login-page').classList.remove('hidden');
+    document.getElementById('forgot-password-page').classList.add('hidden'); // Ensure forgot password page is hidden
+}
+
+function showRegisterPage() {
+    document.getElementById('main-page').classList.add('hidden');
+    document.getElementById('register-page').classList.remove('hidden');
+}
+
+function showForgotPasswordPage() {
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('forgot-password-page').classList.remove('hidden');
+}
 
 function sendVerificationCode() {
     const email = document.getElementById('register-email').value;
@@ -11,7 +30,7 @@ function sendVerificationCode() {
         }, 3000);
         return;
     }
-    fetch(`${BASE_URL}/send_verification_code`, {
+    fetch('http://localhost:5000/send_verification_code', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +53,7 @@ function sendVerificationCode() {
 
 function sendForgotPasswordCode() {
     const email = document.getElementById('forgot-email').value;
-    fetch(`${BASE_URL}/send_forgot_password_code`, {
+    fetch('http://localhost:5000/send_forgot_password_code', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -53,12 +72,30 @@ function sendForgotPasswordCode() {
     });
 }
 
-// ...existing code...
+document.getElementById('forgot-email').addEventListener('input', () => {
+    document.getElementById('forgot-message').innerText = '';
+});
+
+function startTimer(timerId) {
+    let timeLeft = 300;
+    const timerElement = document.getElementById(timerId);
+    const interval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            timerElement.innerText = 'Süre doldu';
+        } else {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeLeft--;
+        }
+    }, 1000);
+}
 
 function login() {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
-    fetch(`${BASE_URL}/login`, {
+    fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -86,7 +123,7 @@ function register() {
         document.getElementById('register-message').innerText = 'Şifreler uyuşmuyor';
         return;
     }
-    fetch(`${BASE_URL}/register`, {
+    fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -116,7 +153,7 @@ function resetPassword() {
         document.getElementById('forgot-message').innerText = 'Şifreler uyuşmuyor';
         return;
     }
-    fetch(`${BASE_URL}/reset_password`, {
+    fetch('http://localhost:5000/reset_password', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -137,4 +174,18 @@ function resetPassword() {
     });
 }
 
-// ...existing code...
+function guestLogin() {
+    window.location.href = 'game.html'; // Redirect to game.html
+}
+
+function closeApplication() {
+    window.open('', '_self').close(); // Close the browser tab
+}
+
+function exitGame() {
+    // Implement the exit game logic
+}
+
+function showAboutPage() {
+    // Implement the about page logic
+}
