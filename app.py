@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_mail import Mail, Message
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -22,6 +22,10 @@ db = client.get_database('test')
 
 def generate_verification_code(length=6):
     return ''.join(random.choices(string.digits, k=length))
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/send_verification_code', methods=['POST'])
 def send_verification_code():
